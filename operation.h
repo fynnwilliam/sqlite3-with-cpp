@@ -71,6 +71,21 @@ void delete_data(std::string alien)
     }
 }
 
+void update_data(std::string update)
+{
+	status = sqlite3_exec(db, update.c_str(), NULL, 0, &errmsg);
+
+	if(status != SQLITE_OK)
+	{
+		std::cout << "could not update data.\n";
+		sqlite3_free(errmsg);
+	}
+	else
+	{
+		std::cout << "successfully updated data.\n";
+	}
+}
+
 void select_data(std::string column)
 {
     sqlite3_exec(db, column.c_str(), callback, NULL, NULL);

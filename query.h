@@ -4,7 +4,7 @@
 std::string all("select * from Test;");
 
 std::string table("create table Test("
-                  "ID int primary key not null, "
+                  "EmployeeID int primary key not null, "
                   "FirstName varchar(255) not null, "
                   "MiddleName varchar(255), "
                   "LastName varchar(255) not null, "
@@ -14,8 +14,17 @@ std::string table("create table Test("
 
 std::string insert("insert into Test values(1, 'Ama', '', 'Kerls', 21, 'New York', 10000.00);"
                    "insert into Test values(2, 'Jim', '', 'Smith', 31, 'Otawa', 12000.00);"
-                   "insert into Test values(3, 'Kimberley', 'J.', 'Wiggles', 22, 'Illinois', 22000.00);");
+                   "insert into Test values(3, 'Kimberley', 'J.', 'Wiggles', 22, 'Illinois', 22000.00);"
+				   "insert into Test values(4, 'fname', 'mname', 'lname', 18, 'location', 1000000.00);");
 
-std::string alien("delete from Test where ID = 2;");
+std::string alien("delete from Test where EmployeeID = 4;");
 
-std::string column("select ID, FirstName, LastName, Salary from Test;");
+std::string update("update Test "
+				   "set Salary = '14000', Address = 'Ottawa' "
+				   "where EmployeeID = 2;");
+
+std::string after_update("select * from Test "
+						 "where EmployeeID = 2 and FirstName = 'Jim';");
+
+std::string column("select EmployeeID, FirstName, LastName, Salary from Test;");
+
