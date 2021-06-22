@@ -1,3 +1,6 @@
+#pragma once
+#include <string>
+
 std::string all("select * from Test;");
 
 std::string table("create table Test("
