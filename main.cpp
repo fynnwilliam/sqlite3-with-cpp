@@ -13,8 +13,8 @@ int main()
     delete_data(alien);
     display_data(all);
 
-	update_data(update);
-	display_data(after_update);
+    update_data(update);
+    display_data(after_update);
 	
     std::cout << "displaying selected columns...\n";
     select_data(column);
