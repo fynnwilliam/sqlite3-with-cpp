@@ -12,8 +12,8 @@ int main()
 
     delete_data(alien);
     display_data(all);
-
-	std::cout << "displaying selected columns...\n";
+	
+    std::cout << "displaying selected columns...\n";
     select_data(column);
 
     sqlite3_close(db);
