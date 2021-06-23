@@ -1,6 +1,5 @@
 #include <sqlite3.h>
 #include <iostream>
-#include <iomanip>
 #include <string>
 #include <vector>
 
@@ -14,19 +13,23 @@ auto print_break = [](int const &total_width)
     std::cout.fill(' ');
 };
 
+constexpr int field_width = 15;
 auto print_header_line = [](int const &index, char **col_name)
 {
-    std::cout << std::left << "| " << std::setw(11) << col_name[index];
+    std::cout.width(field_width);
+    std::cout.setf(std::ios::left);
+    std::cout << "| " + static_cast<std::string>(col_name[index]);
 };
 
 auto print_body_line = [](int const &index, char **argv)
 {
-    std::cout << std::left << "| " << std::setw(11) << (argv[index] ? argv[index] : "null");
+    std::cout.width(field_width);
+    std::cout.setf(std::ios::left);
+    std::cout << "| " + static_cast<std::string>((argv[index] ? argv[index] : "null"));
 };
 
 void print_header(int const &argc, int const &total_width, char **col_name)
 {
-
     print_break(total_width);
     for (int index = 0; index < argc; index++)
         print_header_line(index, col_name);
@@ -46,7 +49,7 @@ void print_body(int const &argc, char **argv)
 static int total_width{};
 static int callback(void *data, int argc, char **argv, char **col_name)
 {
-    total_width = 13 * argc + 1; // same as, 11 * argc + 2 * argc + 1;
+    total_width = field_width * argc + 1;
     if (is_first)
         print_header(argc, total_width, col_name);
 
