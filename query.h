@@ -11,7 +11,7 @@ std::string table("create table Test("
                   "Age int not null, "
                   "Address varchar(255), "
                   "Salary real, "
-                  "check (age > 0));");
+                  "check (Age > 0));");
 
 std::string values("insert into Test values(1, 'Ama', '', 'Kerls', 21, 'New York', 10000.00);"
                    "insert into Test values(2, 'Jim', '', 'Smith', 31, 'Otawa', 12000.00);"

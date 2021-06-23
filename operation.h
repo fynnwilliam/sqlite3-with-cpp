@@ -6,46 +6,49 @@
 
 static bool is_first{true};
 
-auto print_break = []()
+auto print_break = [](int const &total_width)
 {
-    std::cout.width(11 * 7 + 15);
+    std::cout.width(total_width);
     std::cout.fill('-');
     std::cout << '-' << '\n';
     std::cout.fill(' ');
 };
 
-auto print_header_line = [](int i, char **col_name)
+auto print_header_line = [](int const &index, char **col_name)
 {
-    std::cout << std::left << "| " << std::setw(11) << col_name[i];
+    std::cout << std::left << "| " << std::setw(11) << col_name[index];
 };
 
-auto print_body_line = [](int i, char **argv)
+auto print_body_line = [](int const &index, char **argv)
 {
-    std::cout << std::left << "| " << std::setw(11) << (argv[i] ? argv[i] : "null");
+    std::cout << std::left << "| " << std::setw(11) << (argv[index] ? argv[index] : "null");
 };
 
-void print_header(int const &argc, char **col_name)
+void print_header(int const &argc, int const &total_width, char **col_name)
 {
-    print_break();
-    for (int i = 0; i < argc; i++)
-        print_header_line(i, col_name);
+
+    print_break(total_width);
+    for (int index = 0; index < argc; index++)
+        print_header_line(index, col_name);
     std::cout << "|\n";
 
-    print_break();
+    print_break(total_width);
     is_first = false;
 }
 
 void print_body(int const &argc, char **argv)
 {
-    for (int i = 0; i < argc; i++)
-        print_body_line(i, argv);
+    for (int index = 0; index < argc; index++)
+        print_body_line(index, argv);
     std::cout << '|';
 }
 
+static int total_width{};
 static int callback(void *data, int argc, char **argv, char **col_name)
 {
+    total_width = 13 * argc + 1; // same as, 11 * argc + 2 * argc + 1;
     if (is_first)
-        print_header(argc, col_name);
+        print_header(argc, total_width, col_name);
 
     print_body(argc, argv);
 
@@ -115,7 +118,7 @@ void select_data(std::string const column)
 {
     sqlite3_exec(db, column.c_str(), callback, NULL, NULL);
 
-    print_break();
+    print_break(total_width);
     is_first = true;
 }
 
@@ -123,6 +126,6 @@ void display_data(std::string const all)
 {
     sqlite3_exec(db, all.c_str(), callback, NULL, NULL);
 
-    print_break();
+    print_break(total_width);
     is_first = true;
 }
