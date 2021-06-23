@@ -1,12 +1,31 @@
 #include <sqlite3.h>
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 
-static int callback(void *data, int argc, char **argv, char **col_name)
+static bool is_first{true};
+
+void print_header(int const &argc, char **col_name)
 {
     for (int i = 0; i < argc; i++)
-        std::cout << col_name[i] << ": " << (argv[i] ? argv[i] : "null") << '\n';
+        std::cout << std::left << std::setw(11) << col_name[i] << ' ';
+    std::cout << '\n';
+    is_first = false;
+}
+
+void print_body(int const &argc, char **argv)
+{
+    for (int i = 0; i < argc; i++)
+        std::cout << std::setw(11) << (argv[i] ? argv[i] : "null") << ' ';
+}
+
+static int callback(void *data, int argc, char **argv, char **col_name)
+{
+    if (is_first)
+        print_header(argc, col_name);
+
+    print_body(argc, argv);
 
     std::cout << '\n';
 
@@ -73,9 +92,11 @@ void update_data(std::string const fields)
 void select_data(std::string const column)
 {
     sqlite3_exec(db, column.c_str(), callback, NULL, NULL);
+    is_first = true;
 }
 
 void display_data(std::string const all)
 {
     sqlite3_exec(db, all.c_str(), callback, NULL, NULL);
+    is_first = true;
 }
