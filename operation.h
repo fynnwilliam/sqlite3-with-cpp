@@ -6,18 +6,40 @@
 
 static bool is_first{true};
 
+auto print_break = []()
+{
+    std::cout.width(11 * 7 + 15);
+    std::cout.fill('-');
+    std::cout << '-' << '\n';
+    std::cout.fill(' ');
+};
+
+auto print_header_line = [](int i, char **col_name)
+{
+    std::cout << std::left << "| " << std::setw(11) << col_name[i];
+};
+
+auto print_body_line = [](int i, char **argv)
+{
+    std::cout << std::left << "| " << std::setw(11) << (argv[i] ? argv[i] : "null");
+};
+
 void print_header(int const &argc, char **col_name)
 {
+    print_break();
     for (int i = 0; i < argc; i++)
-        std::cout << std::left << std::setw(11) << col_name[i] << ' ';
-    std::cout << '\n';
+        print_header_line(i, col_name);
+    std::cout << "|\n";
+
+    print_break();
     is_first = false;
 }
 
 void print_body(int const &argc, char **argv)
 {
     for (int i = 0; i < argc; i++)
-        std::cout << std::setw(11) << (argv[i] ? argv[i] : "null") << ' ';
+        print_body_line(i, argv);
+    std::cout << '|';
 }
 
 static int callback(void *data, int argc, char **argv, char **col_name)
@@ -92,11 +114,15 @@ void update_data(std::string const fields)
 void select_data(std::string const column)
 {
     sqlite3_exec(db, column.c_str(), callback, NULL, NULL);
+
+    print_break();
     is_first = true;
 }
 
 void display_data(std::string const all)
 {
     sqlite3_exec(db, all.c_str(), callback, NULL, NULL);
+
+    print_break();
     is_first = true;
 }

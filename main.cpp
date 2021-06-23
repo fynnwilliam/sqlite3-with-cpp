@@ -20,6 +20,8 @@ int main()
     update_data(fields);
     display_data(after_update);
 	
+    display_data(all);
+
     std::cout << "displaying selected columns...\n";
     select_data(column);
 
