@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-static bool is_first{true};
+bool is_first{true};
 
 auto print_break = [](int const &total_width)
 {
@@ -46,8 +46,8 @@ void print_body(int const &argc, char **argv)
     std::cout << '|';
 }
 
-static int total_width{};
-static int callback(void *data, int argc, char **argv, char **col_name)
+int total_width{};
+int callback(void *data, int argc, char **argv, char **col_name)
 {
     total_width = field_width * argc + 1;
     if (is_first)
@@ -60,9 +60,9 @@ static int callback(void *data, int argc, char **argv, char **col_name)
     return 0;
 }
 
-static sqlite3 *db;
-static int status{};
-static char *errmsg;
+sqlite3 *db;
+int status{};
+char *errmsg;
 enum class Operation
 {
     create_table,
