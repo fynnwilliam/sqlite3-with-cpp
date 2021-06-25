@@ -6,7 +6,7 @@ Connecting SQLite3 with C++
 `sudo apt install sqlite3 libsqlite3-dev`
 
 ##### compiling the code:
-`g++ main.cpp -l sqlite3 -o main`
+`g++ main.cpp database.cpp -l sqlite3 -o main`
 
 ##### running the app:
  `./main`
