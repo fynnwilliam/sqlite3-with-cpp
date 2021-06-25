@@ -1,31 +1,31 @@
-#include "operation.h"
+#include "database.h"
 #include "query.h"
     
 int main()
 {
+    Database db;
+
     std::cout << "opening database...\n";
-    open_database("example.db");
+    db.open("example.db");
 
     std::cout << "creating tables...\n";
-    create_table(table);
+    db.create_table(table);
 
     std::cout << "inserting and displaying values...\n";
-    insert_values(values);
-    display_data(all);
+    db.insert_values(values);
+    db.display_data(all);
 
     std::cout << "deleting a record...\n";
-    delete_data(alien);
+    db.delete_data(alien);
 
     std::cout << "updating some fields...\n";
-    update_data(fields);
-    display_data(after_update);
+    db.update_data(fields);
+    db.display_data(after_update);
 	
-    display_data(all);
+    db.display_data(all);
 
     std::cout << "displaying selected columns...\n";
-    select_data(column);
-
-    sqlite3_close(db);
+    db.select_data(column);
 
     return 0;
 }
