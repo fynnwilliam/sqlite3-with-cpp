@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-class Database
+class database
 {
 private:
     static bool is_first_;
@@ -13,7 +13,7 @@ private:
     sqlite3 *db_;
     int status_{};
 
-    enum class Operation
+    enum class operation
     {
         create_table,
         insert_values,
@@ -29,10 +29,10 @@ private:
     static void print_body_line(int const &index, char **argv);
     static void print_body(int const &argc, char **argv);
     static void print_break();
-    void check_status(Operation sql) const;
+    void check_status(operation sql) const;
 
 public:
-    Database() :  status_(0), errmsg_(nullptr), db_(nullptr){}
+    database() :  status_(0), errmsg_(nullptr), db_(nullptr){}
     void insert_values(std::string const values);
     void create_table(std::string const table);
     void select_data(std::string const column);
@@ -40,5 +40,5 @@ public:
     void delete_data(std::string const alien);
     void display_data(std::string const all);
     void open(std::string const filename);
-    ~Database() { sqlite3_close(db_); }
+    ~database() { sqlite3_close(db_); }
 };

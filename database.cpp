@@ -1,9 +1,9 @@
 #include "database.h"
 
-bool Database::is_first_ = true;
-int Database::total_width_ = 0;
+bool database::is_first_ = true;
+int database::total_width_ = 0;
 
-int Database::callback(void *data, int argc, char **argv, char **col_name)
+int database::callback(void *data, int argc, char **argv, char **col_name)
 {
     total_width_ = field_width_ * argc + 1;
     if (is_first_)
@@ -15,14 +15,14 @@ int Database::callback(void *data, int argc, char **argv, char **col_name)
     return 0;
 }
 
-void Database::print_header_line(int const &index, char **col_name)
+void database::print_header_line(int const &index, char **col_name)
 {
     std::cout.width(field_width_);
     std::cout.setf(std::ios::left);
     std::cout << "| " + static_cast<std::string>(col_name[index]);
 }
 
-void Database::print_header(int const &argc, char **col_name)
+void database::print_header(int const &argc, char **col_name)
 {
     print_break();
     for (int index = 0; index < argc; index++)
@@ -33,59 +33,59 @@ void Database::print_header(int const &argc, char **col_name)
     is_first_ = false;
 }
 
-void Database::print_body_line(int const &index, char **argv)
+void database::print_body_line(int const &index, char **argv)
 {
     std::cout.width(field_width_);
     std::cout.setf(std::ios::left);
     std::cout << "| " + static_cast<std::string>((argv[index] ? argv[index] : "null"));
 }
 
-void Database::print_body(int const &argc, char **argv)
+void database::print_body(int const &argc, char **argv)
 {
     for (int index = 0; index < argc; index++)
         print_body_line(index, argv);
     std::cout << '|';
 }
 
-void Database::insert_values(std::string const values)
+void database::insert_values(std::string const values)
 {
-    status_ = sqlite3_exec(db_, values.c_str(), NULL, 0, &errmsg_);
-    check_status(Operation::insert_values);
+    status_ = sqlite3_exec(db_, values.c_str(), nullptr, nullptr, &errmsg_);
+    check_status(operation::insert_values);
 }
 
-void Database::create_table(std::string const table)
+void database::create_table(std::string const table)
 {
-    status_ = sqlite3_exec(db_, table.c_str(), NULL, 0, &errmsg_);
-    check_status(Operation::create_table);
+    status_ = sqlite3_exec(db_, table.c_str(), nullptr, nullptr, &errmsg_);
+    check_status(operation::create_table);
 }
 
-void Database::select_data(std::string const column)
+void database::select_data(std::string const column)
 {
-    sqlite3_exec(db_, column.c_str(), callback, NULL, NULL);
+    sqlite3_exec(db_, column.c_str(), callback, nullptr, nullptr);
     print_break();
     is_first_ = true;
 }
 
-void Database::update_data(std::string const fields)
+void database::update_data(std::string const fields)
 {
-    status_ = sqlite3_exec(db_, fields.c_str(), NULL, 0, &errmsg_);
-    check_status(Operation::update_data);
+    status_ = sqlite3_exec(db_, fields.c_str(), nullptr, nullptr, &errmsg_);
+    check_status(operation::update_data);
 }
 
-void Database::delete_data(std::string const alien)
+void database::delete_data(std::string const alien)
 {
-    status_ = sqlite3_exec(db_, alien.c_str(), NULL, 0, &errmsg_);
-    check_status(Operation::delete_data);
+    status_ = sqlite3_exec(db_, alien.c_str(), nullptr, nullptr, &errmsg_);
+    check_status(operation::delete_data);
 }
 
-void Database::display_data(std::string const all)
+void database::display_data(std::string const all)
 {
-    sqlite3_exec(db_, all.c_str(), callback, NULL, NULL);
+    sqlite3_exec(db_, all.c_str(), callback, nullptr, nullptr);
     print_break();
     is_first_ = true;
 }
 
-void Database::check_status(Operation sql) const
+void database::check_status(operation sql) const
 {
     if (status_ != SQLITE_OK)
     {
@@ -94,14 +94,14 @@ void Database::check_status(Operation sql) const
     }
 }
 
-void Database::open(std::string const filename)
+void database::open(std::string const filename)
 {
     status_ = sqlite3_open(filename.c_str(), &db_);
     if (status_)
         std::cout << sqlite3_errmsg(db_) << ", check your permisions in the current directory\n";
 }
 
-void Database::print_break()
+void database::print_break()
 {
     std::cout.width(total_width_);
     std::cout.fill('-');

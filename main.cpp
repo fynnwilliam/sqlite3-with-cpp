@@ -3,7 +3,7 @@
     
 int main()
 {
-    Database db;
+    database db;
 
     std::cout << "opening database...\n";
     db.open("example.db");
